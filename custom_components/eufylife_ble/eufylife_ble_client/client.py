@@ -66,7 +66,7 @@ MODELS: dict[str, DeviceModel] = {
         battery_characteristics=["00002A19-0000-1000-8000-00805f9b34fb"]
     ),
     "eufy T9150": DeviceModel(
-        name="Smart Scale P2 Pro",
+        name="Smart Scale P3",
         advertisement_data_contains_state=True,
         auth_characteristics=["0000FFF4-0000-1000-8000-00805f9b34fb"],
         notify_characteristics=["0000FFF2-0000-1000-8000-00805f9b34fb"],
@@ -217,7 +217,7 @@ class EufyLifeBLEDevice:
             await self._authenticate_if_needed()
 
     async def _authenticate_if_needed(self):
-        if self._model_id not in ["eufy T9148", "eufy T9149"]:
+        if self._model_id not in ["eufy T9148", "eufy T9149", "eufy T9150"]:
             return
 
         self._auth_handler = AuthHandler(self._ble_device.address, self._loop)
@@ -257,7 +257,7 @@ class EufyLifeBLEDevice:
                 data_range = data[4:15]
                 if util.validate_checksum(data_range):
                     self._handle_weight_update_t9146_t9147(data_range)
-        elif self._model_id in ["eufy T9148", "eufy T9149"]:
+        elif self._model_id in ["eufy T9148", "eufy T9149", "eufy T9150"]:
             if len(data) == 19 and data[6] == 0xCF:
                 self._handle_advertisement_weight_update_t9148_t9149(data[6:])
 
@@ -308,7 +308,7 @@ class EufyLifeBLEDevice:
         """Handle notification responses on the auth characteristic."""
         _LOGGER.debug("%s: Auth notification received: %s", self._model_id, data.hex())
 
-        if self._model_id in ["eufy T9148", "eufy T9149"]:
+        if self._model_id in ["eufy T9148", "eufy T9149", "eufy T9150"]:
             if data[0] == 0xC1:
                 self._auth_handler.handle_c1(data)
             elif data[0] == 0xC3:
@@ -335,7 +335,7 @@ class EufyLifeBLEDevice:
                 return
             if len(data) == 11 and data[0] == 0xCF:
                 self._handle_weight_update_t9146_t9147(data)
-        elif self._model_id in ["eufy T9148", "eufy T9149"]:
+        elif self._model_id in ["eufy T9148", "eufy T9149", "eufy T9150"]:
             if len(data) == 16 and data[0] == 0xCF and data[2] == 0x00:
                 self._handle_weight_update_t9148_t9149(data)
 
