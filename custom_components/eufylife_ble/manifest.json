@@ -1,6 +1,6 @@
 {
-    "domain": "eufylife_ble",
-    "name": "EufyLife - Custom",
+    "domain": "eufylife_ble_custom",
+    "name": "P3 Smart Scale",
     "bluetooth": [
       {
         "local_name": "eufy T9140"

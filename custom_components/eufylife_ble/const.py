@@ -1,4 +1,4 @@
 
 """Constants for the EufyLife integration."""
 
-DOMAIN = "eufylife_ble"
+DOMAIN = "eufylife_ble_custom"
